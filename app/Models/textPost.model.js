@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
+
 
 const textPostSchema = mongoose.Schema({
     content: {
@@ -11,5 +13,7 @@ const textPostSchema = mongoose.Schema({
     }
 },{timestamps: true});
 
-const textPost = mongoose.model('Post', textPostSchema);
-module.exports = textPost;
+textPostSchema.plugin(AutoIncrement, {inc_field: 'textPostId'});
+
+const TextPost = mongoose.model('TextPost', textPostSchema);
+module.exports = TextPost;

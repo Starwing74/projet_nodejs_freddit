@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const tagSchema = mongoose.Schema({
+    slug: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
@@ -15,5 +19,5 @@ const tagSchema = mongoose.Schema({
     }
 },{timestamps: true});
 
-const multimediaPost = mongoose.model('Post', multimediaPostSchema);
-module.exports = multimediaPost;
+const Tag = mongoose.model('Tag', tagSchema);
+module.exports = Tag;
