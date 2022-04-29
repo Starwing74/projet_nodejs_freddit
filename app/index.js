@@ -1,4 +1,5 @@
 require('dotenv').config();
+const postRouter = require('./Routers/post.router');
 const express = require("express");
 const path = require('path');
 const app = express();
@@ -22,4 +23,9 @@ mongoose.connect(
 })
 
 app.use(express.json());
+
+
+
+app.use('/posts', postRouter);
+
 

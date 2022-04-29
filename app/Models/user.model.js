@@ -18,7 +18,7 @@ const  userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    karma: {
+    score: {
         type: Number,
         default: 0
     },
@@ -32,10 +32,10 @@ const  userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
     },
-    communities: {
+    /*communities: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Community"
-    }/*,
+    },
     friends: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

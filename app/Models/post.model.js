@@ -13,10 +13,6 @@ const postSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    slug: {
-        type: String,
-        required: true
-    },
     community: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Community"
