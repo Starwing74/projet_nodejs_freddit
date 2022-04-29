@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
 
 const postSchema = mongoose.Schema({
+    slug: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
+    },
+    score: {
+        type: Number,
+        default: 0
     },
     slug: {
         type: String,
