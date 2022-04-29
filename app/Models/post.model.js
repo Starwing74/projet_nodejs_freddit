@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const postSchema = mongoose.Schema({
     title: {
@@ -14,7 +13,14 @@ const postSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Community"
     },
-    
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    tags: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tags"
+    }
 },{timestamps: true});
 
 const Post = mongoose.model('Post', postSchema);
