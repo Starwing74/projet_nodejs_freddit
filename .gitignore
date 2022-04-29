@@ -105,3 +105,7 @@ dist
 
 .idea
 .idea/workspace.xml
+.DS_Store
+.idea/vcs.xml
+.idea/workspace.xml
+README.md
