@@ -9,7 +9,7 @@ const  commentSchema = mongoose.Schema({
     content: {
         type: Text,
         required: true
-    }
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -17,7 +17,7 @@ const  commentSchema = mongoose.Schema({
     post: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"
-    }
+    },
     parent: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
