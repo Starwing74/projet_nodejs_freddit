@@ -1,11 +1,6 @@
 const Post = require('../Models/post.model');
-const Community = require('../Models/community.model');
-const User = require('../Models/user.model');
 
 function postPost(req, res) {
-    Community.find().then((result) => {
-        res.send(result);
-    });
     if (
         !req.body.slug
         && !req.body.title
@@ -28,6 +23,20 @@ function postPost(req, res) {
     })
 }
 
+function test(req, res){
+    //res.send('Welcome to my web server');
+    let p1 = req.param("p1");
+    console.log(p1);
+    res.sendFile('C:\\LP_SMIN\\M12_node_js\\Projet_Node_js\\freddit\\app\\Pages\\page1.html');
+}
+
+function test2(request, response) {
+    let p1 = request.body.p1
+    console.log(request.body);
+    console.log("p1=" + p1);
+    response.sendFile('C:\\LP_SMIN\\M12_node_js\\Projet_Node_js\\freddit\\app\\Pages\\post.html');
+}
+
 module.exports = {
-    postPost
+    postPost, test, test2
 }
