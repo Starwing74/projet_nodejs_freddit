@@ -9,11 +9,15 @@ const tagSchema = mongoose.Schema({
         type: String,
         default: '#6b6b6b'
     },
+    community: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Community"
+    },
     posts: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"
     }
 },{timestamps: true});
 
-const multimediaPost = mongoose.model('Post', multimediaPostSchema);
-module.exports = multimediaPost;
+const tag = mongoose.model('Tag', tagSchema);
+module.exports = tag;

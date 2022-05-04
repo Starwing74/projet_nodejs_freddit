@@ -3,6 +3,9 @@ const Community = require('../Models/community.model');
 const User = require('../Models/user.model');
 const MultimediaPost = require('../Models/multimediaPost.model');
 const TextPost = require('../Models/textPost.model');
+const Vote = require('../Models/vote.model');
+
+// get frontpage posts with highest rated & max 3 per community
 
 function getUserPosts(req, res) {
     let user;
@@ -58,7 +61,7 @@ function getOne(req, res) {
     });
 }
 
-function postPost(req, res) {
+function post(req, res) {
     if (
         !req.body.slug
         && !req.body.title
@@ -73,7 +76,8 @@ function postPost(req, res) {
         slug: req.body.slug,
         title: req.body.title,
         community: req.body.community,
-        user: req.body.user
+        user: req.body.user,
+        tags: req.body.tags
     });
 
     post.save()
@@ -108,6 +112,41 @@ function postPost(req, res) {
     }
 }
 
+function update(req, res) {
+    if(!req.body.content) {
+        return res.status(400).send('Parameters missing');
+    }
+    let post;
+    Post.findOne({"slug": req.params.slug})
+        .then((result) => {
+            post = result;
+        }).catch((err) => {
+            res.status(500).send(err);
+        })
+        .then(() => {
+            if (post.type === "multimedia") {
+                /*MultimediaPost.findOneAndUpdate({"post": post}, {
+                })
+                    .then((result) => {
+                        res.send(result);
+                    }).catch((err) => {
+                    res.status(500).send(err);
+                });*/
+            } else if (post.type === "text") {
+                TextPost.findOneAndUpdate({"post": post}, {
+                    "content": req.body.content
+                })
+                    .then((result) => {
+                        res.send(result);
+                    }).catch((err) => {
+                    res.status(500).send(err);
+                });
+            }
+        }).catch((err) => {
+        res.status(500).send(err);
+    })
+}
+
 module.exports = {
-    postPost, getUserPosts, getCommunityPosts, getOne
+    post, getUserPosts, getCommunityPosts, getOne, update
 }
