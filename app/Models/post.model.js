@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const postSchema = mongoose.Schema({
     slug: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     title: {
         type: String,

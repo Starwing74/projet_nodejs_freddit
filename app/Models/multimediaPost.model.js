@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const multimediaPostSchema = mongoose.Schema({
     content: {
@@ -9,5 +10,5 @@ const multimediaPostSchema = mongoose.Schema({
     }
 },{timestamps: true});
 
-const multimediaPost = mongoose.model('Post', multimediaPostSchema);
+const multimediaPost = mongoose.model('MultimediaPost', multimediaPostSchema);
 module.exports = multimediaPost;

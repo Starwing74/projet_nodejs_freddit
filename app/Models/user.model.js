@@ -4,7 +4,8 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const  userSchema = mongoose.Schema({
     slug: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String,

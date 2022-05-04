@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const textPostSchema = mongoose.Schema({
     content: {
-        type: Text,
+        type: String,
         required: true
     },
     post: {
@@ -11,5 +11,5 @@ const textPostSchema = mongoose.Schema({
     }
 },{timestamps: true});
 
-const textPost = mongoose.model('Post', textPostSchema);
+const textPost = mongoose.model('TextPost', textPostSchema);
 module.exports = textPost;
