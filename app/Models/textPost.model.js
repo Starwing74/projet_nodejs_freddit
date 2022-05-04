@@ -4,8 +4,8 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const textPostSchema = mongoose.Schema({
     content: {
-        type: Text,
-        requured: true
+        type: String,
+        required: true
     },
     post: {
         type: mongoose.Schema.Types.ObjectId,
