@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e98b9967-3e96-43be-bed5-3b2d57ce7e69" name="Changes" comment="">
+    <list default="true" id="e98b9967-3e96-43be-bed5-3b2d57ce7e69" name="Changes" comment="samuel 8">
+      <change afterPath="$PROJECT_DIR$/app/Middleware/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Routers/community.router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/tags.models.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/tag.models.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Controllers/community.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/community.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Controllers/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/user.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Routers/user.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Routers/user.router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
@@ -12,6 +16,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -68,5 +79,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="samuel 8" />
+    <option name="LAST_COMMIT_MESSAGE" value="samuel 8" />
   </component>
 </project>
