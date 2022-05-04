@@ -8,4 +8,7 @@ postRouter.post('/user_posts/:user_slug', postController.getUserPosts);
 postRouter.post('/community_posts/:community_slug', postController.getCommunityPosts); // pourrait être l'index d'une communauté
 postRouter.post('/post/:slug', postController.getOne);
 
+postRouter.get('/page',postController.test);
+postRouter.post('/post',postController.test2);
+
 module.exports = postRouter;

@@ -10,7 +10,5 @@ const multimediaPostSchema = mongoose.Schema({
     }
 },{timestamps: true});
 
-multimediaPostSchema.plugin(AutoIncrement, {inc_field: 'multimediaPostId'});
-
-const MultimediaPost = mongoose.model('MultimediaPost', multimediaPostSchema);
-module.exports = MultimediaPost;
+const multimediaPost = mongoose.model('Post', multimediaPostSchema);
+module.exports = multimediaPost;
