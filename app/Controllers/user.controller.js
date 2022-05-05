@@ -39,9 +39,11 @@ function postUser(req, res) {
 
 function updateUser(req, res) {
     console.log("function updateUser: ");
-    var data = sessionStorage.getItem('token');
-    console.log(data);
-    req.user = data;
+    console.log(req.sessiontest);
+    req.user = req.sessiontest.token;
+
+    const decoded = jwt.verify(req.sessiontest.token, SECRET_KEY);
+    console.log(decoded);
 }
 
 function deleteUser(req, res) {
@@ -90,13 +92,14 @@ function checkConnexion(req, res){
                 console.log("result: --------");
                 console.log(token);
 
-                sessionStorage.getItem("autosave");
+                req.sessiontest.token = token;
+                console.log(req.sessiontest);
 
                 res.header('Authorization', 'Bearer ' + token);
 
                 return res.status(200).json('auth_ok');
             } else {
-                console.log("you are not connected");
+                console.log("you are not connected")
             }
         })
         .catch((err) => res.status(500).send(err));
