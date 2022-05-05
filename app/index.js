@@ -1,13 +1,20 @@
 require('dotenv').config();
-const postRouter = require('./Routers/post.router');
-const userRouter = require('./Routers/user.router');
-const voteRouter = require('./Routers/vote.router');
+
 const express = require("express");
 const path = require('path');
 let bodyParser = require("body-parser");
-const app = express();
 const mongoose = require('mongoose');
+const multer = require("multer");
+const {
+    GridFsStorage
+} = require("multer-gridfs-storage");
+
+const app = express();
 const port = process.env.PORT;
+
+const postRouter = require('./Routers/post.router');
+const userRouter = require('./Routers/user.router');
+const voteRouter = require('./Routers/vote.router');
 
 /**
  * password: FJbwSvBOP2gcfI1c
@@ -23,6 +30,15 @@ mongoose.connect(
 }).catch((err) => {
     console.log(err);
 })
+
+let bucket;
+mongoose.connection.on("connected", () => {
+    let db = mongoose.connections[0].db;
+    bucket = new mongoose.mongo.GridFSBucket(db, {
+        bucketName: "newBucket"
+    });
+    console.log(bucket);
+});
 
 app.use(express.json());
 
