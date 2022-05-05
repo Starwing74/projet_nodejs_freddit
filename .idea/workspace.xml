@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e98b9967-3e96-43be-bed5-3b2d57ce7e69" name="Changes" comment="samuel 8">
-      <change afterPath="$PROJECT_DIR$/app/Middleware/auth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Routers/community.router.js" afterDir="false" />
+    <list default="true" id="e98b9967-3e96-43be-bed5-3b2d57ce7e69" name="Changes" comment="samuel 9">
+      <change afterPath="$PROJECT_DIR$/app/Middleware/session.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Controllers/community.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/community.controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Controllers/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/user.controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Routers/user.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Routers/user.router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +61,14 @@
       <workItem from="1651132448319" duration="4506000" />
       <workItem from="1651215572257" duration="320000" />
     </task>
+    <task id="LOCAL-00001" summary="samuel 9">
+      <created>1651676100861</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1651676100862</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -82,6 +87,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="samuel 8" />
-    <option name="LAST_COMMIT_MESSAGE" value="samuel 8" />
+    <MESSAGE value="samuel 9" />
+    <option name="LAST_COMMIT_MESSAGE" value="samuel 9" />
   </component>
 </project>

@@ -29,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/posts', postRouter);
 
-app.use('/users', userRouter)
+app.use('/users', userRouter);
+
 
 

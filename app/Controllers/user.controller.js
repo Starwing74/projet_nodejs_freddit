@@ -38,7 +38,10 @@ function postUser(req, res) {
 };
 
 function updateUser(req, res) {
-    console.log(sessions.cookie);
+    console.log("function updateUser: ");
+    var data = sessionStorage.getItem('token');
+    console.log(data);
+    req.user = data;
 }
 
 function deleteUser(req, res) {
@@ -55,6 +58,9 @@ function pageConnexion(req, res){
 }
 
 function checkConnexion(req, res){
+    console.log("-----------------------------------");
+    console.log(req.session);
+    console.log("-----------------------------------");
     console.log("checking connexion")
 
     let tmpPassword = req.param("password");
@@ -84,13 +90,13 @@ function checkConnexion(req, res){
                 console.log("result: --------");
                 console.log(token);
 
-                req.session
+                sessionStorage.getItem("autosave");
 
                 res.header('Authorization', 'Bearer ' + token);
 
                 return res.status(200).json('auth_ok');
             } else {
-                console.log("you are not connected")
+                console.log("you are not connected");
             }
         })
         .catch((err) => res.status(500).send(err));
