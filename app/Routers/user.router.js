@@ -1,19 +1,17 @@
 const express = require('express');
 const userController = require('../Controllers/user.controller');
-const auth = require("../Middleware/auth");
-const session = require("../Middleware/session");
-var cookieParser = require('cookie-parser');
 const sessiontesting = require("express-session");
+const getSession = require("../Middleware/session");
+const verifyToken = require("../Middleware/auth");
 
 const userRouter = express.Router();
 
 userRouter.get('/page', userController.pageInscription);
 userRouter.post('/post', userController.postUser);
 userRouter.get('/connexion', userController.pageConnexion);
-userRouter.get('/checkConnexion', session, userController.checkConnexion);
-userRouter.get('/update', session,userController.updateUser);
+userRouter.post('/checkConnexion', getSession, userController.checkConnexion);
+userRouter.post('/update', getSession, verifyToken, userController.updateUser);
 
-userRouter.use(cookieParser());
 
 userRouter.use(sessiontesting({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",

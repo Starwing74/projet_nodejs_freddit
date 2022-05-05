@@ -1,7 +1,6 @@
-var cookieParser = require('cookie-parser');
 const sessiontesting = require("express-session");
 
-const verifyToken = (req, res, next) => {
+const getSession = (req, res, next) => {
 
     sessiontesting({
         secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
@@ -10,9 +9,7 @@ const verifyToken = (req, res, next) => {
         resave: false
     })
 
-    req.sessiontest = sessiontesting;
-
-    return next();
+    next();
 };
 
-module.exports = verifyToken;
+module.exports = getSession;

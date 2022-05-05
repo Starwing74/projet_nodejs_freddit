@@ -1,7 +1,15 @@
+const express = require("express");
+const jwt = require('jsonwebtoken');
+
 const User = require("../Models/user.model");
-var jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = process.env.SECRET_KEY;
+const cookieParser = require('cookie-parser');
+const getSession = require('../Middleware/session');
+const verifyToken = require('../Middleware/auth');
+const app = express();
+
+app.use(cookieParser());
 
 function postUser(req, res) {
     console.log("let's post are name!");
@@ -38,16 +46,10 @@ function postUser(req, res) {
 };
 
 function updateUser(req, res) {
-    console.log("function updateUser: ");
-    console.log(req.sessiontest);
-    req.user = req.sessiontest.token;
-
-    const decoded = jwt.verify(req.sessiontest.token, SECRET_KEY);
-    console.log(decoded);
+    res.send('test');
 }
 
 function deleteUser(req, res) {
-
 };
 
 function pageInscription(req, res){
@@ -73,29 +75,30 @@ function checkConnexion(req, res){
     let tmpEmail = req.param("email");
     console.log(tmpEmail);
 
-    User.findOne({password: tmpPassword})
+    User.findOne({ "password" : tmpPassword , "email" : tmpEmail })
         .then((result) => {
             if(result) {
                 console.log("you are connected");
                 console.log("result:" + result);
 
-                const expireIn = 24 * 60 * 60;
-                const token    = jwt.sign({
+                const expireIn = "24hr";
+                const token = jwt.sign({
                         userId: result._id,
                         userEmail: result.email
                     },
                     SECRET_KEY,
                     {
                         expiresIn: expireIn
+                    },
+                    function(err, token) {
+                        if (err) {
+                            console.log("result: --------");
+                            console.log(err);
+                        } else {
+                            console.log("result: --------");
+                            console.log(token);
+                        }
                     });
-
-                console.log("result: --------");
-                console.log(token);
-
-                req.sessiontest.token = token;
-                console.log(req.sessiontest);
-
-                res.header('Authorization', 'Bearer ' + token);
 
                 return res.status(200).json('auth_ok');
             } else {
