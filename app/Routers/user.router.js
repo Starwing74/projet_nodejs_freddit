@@ -10,8 +10,8 @@ const userRouter = express.Router();
 userRouter.get('/page', userController.pageInscription);
 userRouter.post('/post', userController.postUser);
 userRouter.get('/connexion', userController.pageConnexion);
-userRouter.get('/checkConnexion', userController.checkConnexion);
-userRouter.get('/update', auth,userController.updateUser);
+userRouter.get('/checkConnexion', session, userController.checkConnexion);
+userRouter.get('/update', session,userController.updateUser);
 
 userRouter.use(cookieParser());
 
