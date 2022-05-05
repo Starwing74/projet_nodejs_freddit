@@ -45,7 +45,8 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/posts', postRouter);
-app.use('/vote', voteRouter);
+
 app.use('/users', userRouter);
+
 
 

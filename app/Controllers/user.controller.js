@@ -1,4 +1,7 @@
 const User = require("../Models/user.model");
+var jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const SECRET_KEY = process.env.SECRET_KEY;
 
 function postUser(req, res) {
     console.log("let's post are name!");
@@ -34,6 +37,13 @@ function postUser(req, res) {
 
 };
 
+function updateUser(req, res) {
+    console.log("function updateUser: ");
+    var data = sessionStorage.getItem('token');
+    console.log(data);
+    req.user = data;
+}
+
 function deleteUser(req, res) {
 
 };
@@ -48,10 +58,15 @@ function pageConnexion(req, res){
 }
 
 function checkConnexion(req, res){
+    console.log("-----------------------------------");
+    console.log(req.session);
+    console.log("-----------------------------------");
     console.log("checking connexion")
 
     let tmpPassword = req.param("password");
     console.log(tmpPassword);
+
+    const encryptedPassword = bcrypt.hash(tmpPassword, 10);
 
     let tmpEmail = req.param("email");
     console.log(tmpEmail);
@@ -59,14 +74,34 @@ function checkConnexion(req, res){
     User.findOne({password: tmpPassword})
         .then((result) => {
             if(result) {
-                console.log("you are connected")
+                console.log("you are connected");
+                console.log("result:" + result);
+
+                const expireIn = 24 * 60 * 60;
+                const token    = jwt.sign({
+                        userId: result._id,
+                        userEmail: result.email
+                    },
+                    SECRET_KEY,
+                    {
+                        expiresIn: expireIn
+                    });
+
+                console.log("result: --------");
+                console.log(token);
+
+                sessionStorage.getItem("autosave");
+
+                res.header('Authorization', 'Bearer ' + token);
+
+                return res.status(200).json('auth_ok');
             } else {
-                console.log("you are not connected")
+                console.log("you are not connected");
             }
         })
         .catch((err) => res.status(500).send(err));
 }
 
 module.exports = {
-    pageInscription, postUser, pageConnexion, checkConnexion
+    pageInscription, postUser, pageConnexion, checkConnexion, updateUser
 }
