@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const multimediaPostSchema = mongoose.Schema({
-    content: {
+    multimedia_file: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'GFS'
     },
     post: {
         type: mongoose.Schema.Types.ObjectId,

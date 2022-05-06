@@ -1,9 +1,13 @@
-const Post = require('../Models/post.model');
-const Community = require('../Models/community.model');
-const User = require('../Models/user.model');
-const MultimediaPost = require('../Models/multimediaPost.model');
-const TextPost = require('../Models/textPost.model');
-const Vote = require('../Models/vote.model');
+const Post = require('../Models/post.model'),
+    Community = require('../Models/community.model'),
+    User = require('../Models/user.model'),
+    MultimediaPost = require('../Models/multimediaPost.model'),
+    TextPost = require('../Models/textPost.model'),
+    Vote = require('../Models/vote.model'),
+    GFS = require("../Models/gridFS.model");
+
+const {now} = require("mongoose");
+const GridFsBucketConnection = require  ("../Singletons/gridFsBucketConnection.singleton");
 
 // get frontpage posts with highest rated & max 3 per community
 
@@ -68,10 +72,10 @@ function post(req, res) {
         && !req.body.community
         && !req.body.user
         && !req.body.type
-        && !req.body.content
     ) {
         return res.status(400).send('Parameters missing');
     }
+
     const post = new Post({
         slug: req.body.slug,
         title: req.body.title,
@@ -82,34 +86,52 @@ function post(req, res) {
 
     post.save()
         .then((result) => {
-            res.send(result);
+            if (req.body.type === "multimedia") {
+                if(!req.file) {
+                    return res.status(400).send('Parameters missing 2');
+                }
+                const multimediaPost = new MultimediaPost({
+                    multimedia_file: req.file.id,
+                    post: post
+                });
+
+                multimediaPost.save()
+                    .then((result) => {
+                        console.log("post :" + post);
+                        post.updateOne({"multimediaPost": multimediaPost})
+                            .then((result) => {
+                                res.send(result);
+                            })
+                            .catch((err) => {
+                                res.status(500).send(err);
+                            });
+                    }).catch((err) => {
+                        res.status(500).send(err);
+                    });
+            } else if (req.body.type === "text") {
+                if(!req.body.content) {
+                    return res.status(400).send('Parameters missing');
+                }
+                const textPost = new TextPost({
+                    content: req.body.content,
+                    post: post
+                });
+                textPost.save()
+                    .then((result) => {
+                        post.updateOne({"textPost": textPost})
+                            .then((result) => {
+                                res.send(result);
+                            })
+                            .catch((err) => {
+                                res.status(500).send(err);
+                            });
+                    }).catch((err) => {
+                    res.status(500).send(err);
+                });
+            }
         }).catch((err) => {
         res.status(500).send(err);
     })
-
-    if (req.body.type === "multimedia") {
-        const multimediaPost = new MultimediaPost({
-            content: req.body.content,
-            post: post
-        });
-        multimediaPost.save()
-            .then((result) => {
-                res.send(result);
-            }).catch((err) => {
-            res.status(500).send(err);
-        });
-    } else if (req.body.type === "text") {
-        const textPost = new TextPost({
-            content: req.body.content,
-            post: post
-        });
-        textPost.save()
-            .then((result) => {
-                res.send(result);
-            }).catch((err) => {
-            res.status(500).send(err);
-        });
-    }
 }
 
 function update(req, res) {
@@ -147,6 +169,54 @@ function update(req, res) {
     })
 }
 
+function show(req, res) {
+    let postData;
+    Post.findOne({"slug": req.params.slug})
+        .then((result) => {
+            postData = result;
+            if ('multimediaPost' in result) {
+                MultimediaPost.findOne({"_id" : result.multimediaPost})
+                .then((result) => {
+                    GFS.findOne({"_id" : result.multimedia_file})
+                        .then((result) => {
+                            GridFsBucketConnection.getGfs().files.findOne({"filename": result.filename}, (err, file) => {
+                                if (!file || file.length === 0) {
+                                    return res.status(404).json({err: 'No File Exists'});
+                                } else {
+                                    // Check if is image or video
+                                    if (
+                                        file.contentType === "image/jpeg"
+                                        || file.contentType === "image/png"
+                                        || file.contentType === "video/mp4"
+                                        || file.contentType === "video/mov"
+                                    ) {
+                                        const readstream = GridFsBucketConnection.getBucket().openDownloadStreamByName(file.filename);
+                                        readstream.post_data = postData; // get post data
+                                        readstream.pipe(res);
+                                    } else {
+                                        res.status(404).json({err: 'Not an image'});
+                                    }
+                                }
+                            });
+                        })
+                        .catch((err) => {
+                            res.status(500).send(err);
+                        });
+                })
+                .catch((err) => {
+                    res.status(500).send(err);
+                });
+            } else if ('textPost' in result){
+                console.log('test');
+                TextPost.findOne({"_id": result.multimediaPost})
+                    .then((result) => {
+                        postData.text = result.text;
+                        res.send(postData);
+                    })
+            }
+        });
+}
+
 module.exports = {
-    post, getUserPosts, getCommunityPosts, getOne, update
+    post, getUserPosts, getCommunityPosts, getOne, update, show
 }

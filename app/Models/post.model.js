@@ -25,6 +25,14 @@ const postSchema = mongoose.Schema({
     tags: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tags"
+    },
+    multimediaPost: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MultimediaPost"
+    },
+    textPost: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "TextPost"
     }
 },{timestamps: true});
 
