@@ -174,43 +174,42 @@ function show(req, res) {
     Post.findOne({"slug": req.params.slug})
         .then((result) => {
             postData = result;
-            if ('multimediaPost' in result) {
+            if (result.multimediaPost !== undefined) {
                 MultimediaPost.findOne({"_id" : result.multimediaPost})
-                .then((result) => {
-                    GFS.findOne({"_id" : result.multimedia_file})
-                        .then((result) => {
-                            GridFsBucketConnection.getGfs().files.findOne({"filename": result.filename}, (err, file) => {
-                                if (!file || file.length === 0) {
-                                    return res.status(404).json({err: 'No File Exists'});
-                                } else {
-                                    // Check if is image or video
-                                    if (
-                                        file.contentType === "image/jpeg"
-                                        || file.contentType === "image/png"
-                                        || file.contentType === "video/mp4"
-                                        || file.contentType === "video/mov"
-                                    ) {
-                                        const readstream = GridFsBucketConnection.getBucket().openDownloadStreamByName(file.filename);
-                                        readstream.post_data = postData; // get post data
-                                        readstream.pipe(res);
-                                    } else {
-                                        res.status(404).json({err: 'Not an image'});
-                                    }
-                                }
-                            });
-                        })
-                        .catch((err) => {
-                            res.status(500).send(err);
-                        });
-                })
-                .catch((err) => {
-                    res.status(500).send(err);
-                });
-            } else if ('textPost' in result){
-                console.log('test');
-                TextPost.findOne({"_id": result.multimediaPost})
                     .then((result) => {
-                        postData.text = result.text;
+                        GFS.findOne({"_id" : result.multimedia_file})
+                            .then((result) => {
+                                GridFsBucketConnection.getGfs().files.findOne({"filename": result.filename}, (err, file) => {
+                                    if (!file || file.length === 0) {
+                                        return res.status(404).json({err: 'No File Exists'});
+                                    } else {
+                                        // Check if is image or video
+                                        if (
+                                            file.contentType === "image/jpeg"
+                                            || file.contentType === "image/png"
+                                            || file.contentType === "video/mp4"
+                                            || file.contentType === "video/mov"
+                                        ) {
+                                            const readstream = GridFsBucketConnection.getBucket().openDownloadStreamByName(file.filename);
+                                            readstream.post_data = postData; // get post data
+                                            readstream.pipe(res);
+                                        } else {
+                                            res.status(404).json({err: 'Not an image'});
+                                        }
+                                    }
+                                });
+                            })
+                            .catch((err) => {
+                                res.status(500).send(err);
+                            });
+                    })
+                    .catch((err) => {
+                        res.status(500).send(err);
+                    });
+            } else if (result.textPost !== undefined) {
+                TextPost.findOne({"_id": result.textPost})
+                    .then((result) => {
+                        postData.content = result.content;
                         res.send(postData);
                     })
             }

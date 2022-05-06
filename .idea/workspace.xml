@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e98b9967-3e96-43be-bed5-3b2d57ce7e69" name="Changes" comment="samuel 12">
-      <change afterPath="$PROJECT_DIR$/app/Pages/updateUser.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Controllers/community.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/community.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Controllers/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/user.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/community.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/community.model.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Routers/community.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Routers/community.router.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Routers/user.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Routers/user.router.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Controllers/post.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/post.controller.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +40,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
