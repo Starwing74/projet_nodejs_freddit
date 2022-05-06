@@ -13,6 +13,8 @@ const GridFsBucketConnection = require("./Singletons/gridFsBucketConnection.sing
 const postRouter = require('./Routers/post.router');
 const userRouter = require('./Routers/user.router');
 const voteRouter = require('./Routers/vote.router');
+const communitiesRouter = require('./Routers/community.router');
+
 const Grid = require("gridfs-stream");
 
 const app = express();
@@ -47,6 +49,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/posts', postRouter);
 app.use('/vote', voteRouter);
 app.use('/users', userRouter);
+
+app.use('/communities', communitiesRouter);
 
 
 

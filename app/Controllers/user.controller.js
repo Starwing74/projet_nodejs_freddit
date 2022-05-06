@@ -2,11 +2,13 @@ const express = require("express");
 const jwt = require('jsonwebtoken');
 
 const User = require("../Models/user.model");
+const Community = require("../Models/community.model");
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = process.env.SECRET_KEY;
 const cookieParser = require('cookie-parser');
 const getSession = require('../Middleware/session');
 const verifyToken = require('../Middleware/auth');
+const TextPost = require("../Models/textPost.model");
 const app = express();
 
 app.use(cookieParser());
@@ -46,10 +48,36 @@ function postUser(req, res) {
 };
 
 function updateUser(req, res) {
-    res.send('test');
+    console.log(req.user);
+
+    console.log(req.body.email + ", " + req.body.password + ", " + req.body.name);
+
+    if(!req.body.email || !req.body.password || !req.body.name) {
+        res.send("missing body");
+    }
+    else {
+        User.findOneAndUpdate({"_id": req.user.userId}, {
+            "name": req.body.name,
+            "email": req.body.email,
+            "password": req.body.password
+        })
+            .then((result) => {
+                res.send("update complet");
+            }).catch((err) => {
+            res.status(500).send(err);
+        });
+    }
 }
 
 function deleteUser(req, res) {
+    console.log(req.user);
+
+    User.findByIdAndDelete({"_id": req.user.userId})
+        .then((result) => {
+            res.send("delete complet");
+        }).catch((err) => {
+        res.status(500).send(err);
+    });
 };
 
 function pageInscription(req, res){
@@ -108,6 +136,60 @@ function checkConnexion(req, res){
         .catch((err) => res.status(500).send(err));
 }
 
+function userJoinCommunity(req, res) {
+
+    console.log("userJoinCommunity: ");
+    console.log("--" + req.user.userId)
+    console.log("--" + req.body.slug);
+
+    Community.findOne({"users" : { $in : [req.user.userId]  }, "slug" : req.body.slug })
+        .then((result) => {
+            if(result) {
+                console.log("this user is already in the community");
+                res.send("you already joined the community")
+            }
+            else {
+                console.log("this user is not in the community");
+                Community.findOneAndUpdate({ "slug" : req.body.slug}, {$push: {users : req.user.userId}})
+                    .then((result) => {
+                        console.log(result)
+                        res.send(result);
+                    }).catch((err) => {
+                    res.status(500).send(err);
+                });
+            }
+
+        }).catch((err) => {
+        res.status(500).send(err);
+    })
+}
+
+function userLeaveCommunity(req, res) {
+    console.log("userLeaveCommunity: ");
+    console.log("--" + req.user.userId)
+    console.log("--" + req.body.slug);
+
+    Community.findOne({"users" : { $in : [req.user.userId]  }, "slug" : req.body.slug })
+        .then((result) => {
+            if(result) {
+                console.log("this user is already in the community");
+                Community.findOneAndUpdate({ "slug" : req.body.slug}, {$pull: {users : req.user.userId}})
+                    .then((result) => {
+                        console.log(result)
+                        res.send(result);
+                    }).catch((err) => {
+                    res.status(500).send(err);
+                });
+            }
+            else {
+                res.send("you are not in this community!")
+            }
+
+        }).catch((err) => {
+        res.status(500).send(err);
+    })
+}
+
 module.exports = {
-    pageInscription, postUser, pageConnexion, checkConnexion, updateUser
+    pageInscription, postUser, pageConnexion, checkConnexion, updateUser, deleteUser, userJoinCommunity, userLeaveCommunity
 }
