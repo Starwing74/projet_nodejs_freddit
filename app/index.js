@@ -15,6 +15,7 @@ const port = process.env.PORT;
 const postRouter = require('./Routers/post.router');
 const userRouter = require('./Routers/user.router');
 const voteRouter = require('./Routers/vote.router');
+const communitiesRouter = require('./Routers/community.router');
 
 /**
  * password: FJbwSvBOP2gcfI1c
@@ -47,6 +48,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/posts', postRouter);
 
 app.use('/users', userRouter);
+
+app.use('/communities', communitiesRouter);
 
 
 
