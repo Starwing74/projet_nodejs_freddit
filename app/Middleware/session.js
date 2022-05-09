@@ -1,12 +1,14 @@
-const sessiontesting = require("express-session");
+// we ended up not using it, as express-session doesn't seem to work from a next() middleware
+
+const session = require("express-session");
 
 const getSession = (req, res, next) => {
 
-    sessiontesting({
+    session({
         secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
         saveUninitialized:true,
         cookie: { maxAge: 60000  },
-        resave: false
+        resave: true
     })
 
     next();

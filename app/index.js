@@ -16,6 +16,7 @@ const voteRouter = require('./Routers/vote.router');
 const communitiesRouter = require('./Routers/community.router');
 
 const Grid = require("gridfs-stream");
+const session = require("express-session");
 
 const app = express();
 const port = process.env.PORT;
@@ -39,8 +40,12 @@ mongoose.connect(process.env.DB_CONNECTION)
     console.log(err);
 })
 
-
-
+app.use(session({
+    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    saveUninitialized:true,
+    cookie: { maxAge: 60000  },
+    resave: true
+}));
 
 app.use(express.json());
 
