@@ -127,7 +127,6 @@ function checkConnexion(req, res){
                             console.log(token);
                         }
                     });
-
                 return res.status(200).json('auth_ok');
             } else {
                 console.log("you are not connected")

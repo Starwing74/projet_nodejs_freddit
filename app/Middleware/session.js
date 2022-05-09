@@ -1,10 +1,13 @@
-const session = require("express-session");
+const sessiontesting = require("express-session");
 
 const getSession = (req, res, next) => {
 
-    session({ resave: true, secret: 'mysecret', saveUninitialized: true})
-
-    req.session.mytoken = "test"
+    sessiontesting({
+        secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+        saveUninitialized:true,
+        cookie: { maxAge: 60000  },
+        resave: false
+    })
 
     next();
 };
