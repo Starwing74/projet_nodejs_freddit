@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e98b9967-3e96-43be-bed5-3b2d57ce7e69" name="Changes" comment="samuel 13">
+    <list default="true" id="e98b9967-3e96-43be-bed5-3b2d57ce7e69" name="Changes" comment="samuel 12">
+      <change afterPath="$PROJECT_DIR$/app/Pages/updateUser.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Controllers/community.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/community.controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Controllers/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/user.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Middleware/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Middleware/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Middleware/session.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Middleware/session.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Pages/page1.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/Pages/page1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Pages/pageConnexion.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/Pages/pageConnexion.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/community.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/community.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Routers/community.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Routers/community.router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Routers/user.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Routers/user.router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,14 +95,7 @@
       <option name="project" value="LOCAL" />
       <updated>1651734609092</updated>
     </task>
-    <task id="LOCAL-00005" summary="samuel 13">
-      <created>1651842681166</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1651842681166</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -124,7 +118,6 @@
     <MESSAGE value="samuel 10" />
     <MESSAGE value="samuel 11" />
     <MESSAGE value="samuel 12" />
-    <MESSAGE value="samuel 13" />
-    <option name="LAST_COMMIT_MESSAGE" value="samuel 13" />
+    <option name="LAST_COMMIT_MESSAGE" value="samuel 12" />
   </component>
 </project>

@@ -20,53 +20,37 @@ function postUser(req, res) {
     console.log(name);
 
     let password = req.param("password");
-
-    encryptedPassword = bcrypt.hashSync(password, 5);
-
-    console.log(encryptedPassword);
+    console.log(password);
 
     let email = req.param("email");
     console.log(email);
 
-    User.findOne({"email" : email})
-        .then((result) => {
-            if(result){
-                res.send("this mail already exist");
-            } else {
-                if (
-                    !email
-                    && !password
-                    && !name
-                ) {
-                    return res.status(400).send('Parameters missing');
-                }
-                const user = new User({
-                    slug: "1",
-                    name: name,
-                    password: encryptedPassword,
-                    email: email
-                });
-                user.save()
-                    .then((result) => {
-                        res.send(result);
-                    }).catch((err) => {
-                    res.status(500).send(err);
-                })
-            }
-        }).catch((err) => {
-        res.send("error");
+    if (
+        !email
+        && !password
+        && !name
+    ) {
+        return res.status(400).send('Parameters missing');
+    }
+    const user = new User({
+        slug: "1",
+        name: name,
+        password: password,
+        email: email
     });
+    user.save()
+        .then((result) => {
+            res.send(result);
+        }).catch((err) => {
+        res.status(500).send(err);
+    })
+
 };
 
 function updateUser(req, res) {
+    console.log(req.user);
 
-
-    console.log("mytoken: " + req.session.mytoken)
-    res.send(req.session.mytoken);
-
-    /*console.log(req.body.email + ", " + req.body.password + ", " + req.body.name);
-
-    encryptedPassword = bcrypt.hashSync(req.body.password, 5);
+    console.log(req.body.email + ", " + req.body.password + ", " + req.body.name);
 
     if(!req.body.email || !req.body.password || !req.body.name) {
         res.send("missing body");
@@ -75,14 +59,14 @@ function updateUser(req, res) {
         User.findOneAndUpdate({"_id": req.user.userId}, {
             "name": req.body.name,
             "email": req.body.email,
-            "password": encryptedPassword
+            "password": req.body.password
         })
             .then((result) => {
                 res.send("update complet");
             }).catch((err) => {
             res.status(500).send(err);
         });
-    }*/
+    }
 }
 
 function deleteUser(req, res) {
@@ -106,53 +90,50 @@ function pageConnexion(req, res){
 }
 
 function checkConnexion(req, res){
+    console.log("-----------------------------------");
+    console.log(req.session);
+    console.log("-----------------------------------");
+    console.log("checking connexion")
 
-    console.log(req.param("password"));
-    console.log(req.param("email"));
+    let tmpPassword = req.param("password");
+    console.log(tmpPassword);
 
-    const password = req.param("password");
-    const email = req.param("email");
+    const encryptedPassword = bcrypt.hash(tmpPassword, 10);
 
-    User.findOne({"email":email})
+    let tmpEmail = req.param("email");
+    console.log(tmpEmail);
+
+    User.findOne({ "password" : tmpPassword , "email" : tmpEmail })
         .then((result) => {
-            console.log("result.password: " + result.password);
-            console.log("password: " + password);
-            if(result){
-                bcrypt.compare(password, result.password)
-                    .then(doMatch=>{
-                        if(doMatch){
-                            console.log("good password");
+            if(result) {
+                console.log("you are connected");
+                console.log("result:" + result);
 
-                            const expireIn = "24hr";
-                            const token = jwt.sign({
-                                    userId: result._id,
-                                    userEmail: result.email
-                                },
-                                SECRET_KEY,
-                                {
-                                    expiresIn: expireIn
-                                },
-                                function(err, token) {
-                                    if (err) {
-                                        console.log("result: --------");
-                                        console.log(err);
-                                    } else {
-                                        console.log("result: --------");
-                                        console.log(token);
-                                        req.session.mytoken = token;
-                                        console.log("______" + req.session.mytoken + "______")
-                                    }
-                                });
-
-                            return res.status(200).json('auth_ok');
-                        }else{
-                            res.send("wrong password");
+                const expireIn = "24hr";
+                const token = jwt.sign({
+                        userId: result._id,
+                        userEmail: result.email
+                    },
+                    SECRET_KEY,
+                    {
+                        expiresIn: expireIn
+                    },
+                    function(err, token) {
+                        if (err) {
+                            console.log("result: --------");
+                            console.log(err);
+                        } else {
+                            console.log("result: --------");
+                            console.log(token);
                         }
-                    }).catch(err=>{
-                    console.log(err);
-                })
+                    });
+
+                return res.status(200).json('auth_ok');
+            } else {
+                console.log("you are not connected")
             }
-        }).catch((err) => {res.send("your email doesnt exist")})
+        })
+        .catch((err) => res.status(500).send(err));
 }
 
 function userJoinCommunity(req, res) {

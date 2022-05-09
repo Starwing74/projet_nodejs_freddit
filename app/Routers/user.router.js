@@ -8,7 +8,7 @@ const path = require("path");
 
 const userRouter = express.Router();
 
-userRouter.get('/page', userController.pageInscription);
+userRouter.get('/register', userController.pageInscription);
 userRouter.post('/post', userController.postUser);
 userRouter.get('/connexion', userController.pageConnexion);
 userRouter.get('/checkConnexion', getSession, userController.checkConnexion);
