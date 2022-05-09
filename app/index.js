@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-const session = require('express-session');
 const express = require("express");
 const path = require('path');
 let bodyParser = require("body-parser");
+let cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const multer = require("multer");
 const {
@@ -14,7 +14,9 @@ const GridFsBucketConnection = require("./Singletons/gridFsBucketConnection.sing
 const postRouter = require('./Routers/post.router');
 const userRouter = require('./Routers/user.router');
 const voteRouter = require('./Routers/vote.router');
+const commentRouter = require('./Routers/comment.router');
 const communitiesRouter = require('./Routers/community.router');
+const auth = require("./Middleware/auth")
 
 const Grid = require("gridfs-stream");
 const session = require("express-session");
@@ -49,12 +51,14 @@ app.use(session({
 }));
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/posts', postRouter);
 app.use('/vote', voteRouter);
 app.use('/users', userRouter);
+app.use('/comments', commentRouter);
 
 app.use('/communities', communitiesRouter);
 

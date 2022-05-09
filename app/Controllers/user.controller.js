@@ -5,13 +5,9 @@ const User = require("../Models/user.model");
 const Community = require("../Models/community.model");
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = process.env.SECRET_KEY;
-const cookieParser = require('cookie-parser');
-const getSession = require('../Middleware/session');
-const verifyToken = require('../Middleware/auth');
 const TextPost = require("../Models/textPost.model");
+const path = require("path");
 const app = express();
-
-app.use(cookieParser());
 
 function postUser(req, res) {
     console.log("let's post are name!");
@@ -22,12 +18,16 @@ function postUser(req, res) {
     let password = req.param("password");
     console.log(password);
 
+    encryptedPassword = bcrypt.hashSync(password, 5);
+
+    console.log(encryptedPassword);
+
     let email = req.param("email");
     console.log(email);
 
     if (
         !email
-        && !password
+        && !encryptedPassword
         && !name
     ) {
         return res.status(400).send('Parameters missing');
@@ -35,7 +35,7 @@ function postUser(req, res) {
     const user = new User({
         slug: "1",
         name: name,
-        password: password,
+        password: encryptedPassword,
         email: email
     });
     user.save()
@@ -45,12 +45,46 @@ function postUser(req, res) {
         res.status(500).send(err);
     })
 
+    User.findOne({"email" : email})
+        .then((result) => {
+            if(result){
+                res.send("this mail already exist");
+            } else {
+                if (
+                    !email
+                    && !password
+                    && !name
+                ) {
+                    return res.status(400).send('Parameters missing');
+                }
+                const user = new User({
+                    slug: "1",
+                    name: name,
+                    password: encryptedPassword,
+                    email: email
+                });
+                user.save()
+                    .then((result) => {
+                        res.send(result);
+                    }).catch((err) => {
+                    res.status(500).send(err);
+                })
+            }
+        }).catch((err) => {
+        res.send("error");
+    });
 };
 
-function updateUser(req, res) {
-    console.log(req.user);
+function updateUser(req, res, next) {
+    console.log("---res.user.userId: " + req.user.userId);
+
+    req.body.email = "test";
+    req.body.password = "test";
+    req.body.name = "test";
 
     console.log(req.body.email + ", " + req.body.password + ", " + req.body.name);
+
+    encryptedPassword = bcrypt.hashSync(req.body.password, 5);
 
     if(!req.body.email || !req.body.password || !req.body.name) {
         res.send("missing body");
@@ -59,7 +93,7 @@ function updateUser(req, res) {
         User.findOneAndUpdate({"_id": req.user.userId}, {
             "name": req.body.name,
             "email": req.body.email,
-            "password": req.body.password
+            "password": encryptedPassword
         })
             .then((result) => {
                 res.send("update complet");
@@ -67,6 +101,8 @@ function updateUser(req, res) {
             res.status(500).send(err);
         });
     }
+
+
 }
 
 function deleteUser(req, res) {
@@ -82,14 +118,14 @@ function deleteUser(req, res) {
 
 function pageInscription(req, res){
     console.log('Welcome to my web server');
-    res.sendFile('C:\\LP_SMIN\\M12_node_js\\Projet_Node_js\\freddit\\app\\Pages\\page1.html');
+    res.sendFile(path.join(__dirname, '..', 'Pages', 'page1.html'));
 }
 
 function pageConnexion(req, res){
-    res.sendFile('C:\\LP_SMIN\\M12_node_js\\Projet_Node_js\\freddit\\app\\Pages\\pageConnexion.html');
+    res.sendFile(path.join(__dirname, '..', 'Pages', 'pageConnexion.html'));
 }
 
-function checkConnexion(req, res){
+function checkConnexion(req, res, next){
     console.log("-----------------------------------");
     console.log(req.session);
     console.log("-----------------------------------");
@@ -98,47 +134,67 @@ function checkConnexion(req, res){
     let tmpPassword = req.param("password");
     console.log(tmpPassword);
 
-    const encryptedPassword = bcrypt.hash(tmpPassword, 10);
-
     let tmpEmail = req.param("email");
     console.log(tmpEmail);
 
-    User.findOne({ "password" : tmpPassword , "email" : tmpEmail })
+    User.findOne({ "email" : tmpEmail })
         .then((result) => {
             if(result) {
                 console.log("you are connected");
                 console.log("result:" + result);
 
-                const expireIn = "24hr";
-                const token = jwt.sign({
-                        userId: result._id,
-                        userEmail: result.email
-                    },
-                    SECRET_KEY,
-                    {
-                        expiresIn: expireIn
-                    },
-                    function(err, token) {
-                        if (err) {
-                            console.log("result: --------");
-                            console.log(err);
+                bcrypt.compare(tmpPassword, result.password)
+                    .then(doMatch=> {
+                        if (doMatch) {
+                            console.log("good password");
+
+                            const expireIn = "24hr";
+                            const token = jwt.sign({
+                                    userId: result._id,
+                                    userEmail: result.email
+                                },
+                                SECRET_KEY,
+                                {
+                                    expiresIn: expireIn
+                                },
+                                function(err, token) {
+                                    if (err) {
+                                        console.log("result: --------");
+                                        console.log(err);
+                                    } else {
+                                        console.log("result: --------");
+                                        console.log(token);
+                                        req.session.mytoken = token;
+                                        req.session.username = result.name;
+                                        req.session.score = result.score;
+                                        req.session.save(() => {
+                                            req.session.mytoken = token;
+                                            req.session.username = result.name;
+                                            req.session.score = result.score;
+                                            return next()
+                                        });
+                                    }
+                                });
+                            return res.status(200).json('auth_ok');
                         } else {
-                            console.log("result: --------");
-                            console.log(token);
+                            res.send("wrong password");
                         }
-                    });
-                return res.status(200).json('auth_ok');
+                    }).catch((err) => {
+                    res.status(500).send(err);
+                })
             } else {
                 console.log("you are not connected")
+                res.send("wrong email");
             }
-        })
-        .catch((err) => res.status(500).send(err));
+        }).catch((err) => {
+        res.status(500).send(err);
+    })
 }
 
 function userJoinCommunity(req, res) {
 
     console.log("userJoinCommunity: ");
-    console.log("--" + req.user.userId)
+    console.log("--" + req.user.userId);
     console.log("--" + req.body.slug);
 
     Community.findOne({"users" : { $in : [req.user.userId]  }, "slug" : req.body.slug })
@@ -189,6 +245,25 @@ function userLeaveCommunity(req, res) {
     })
 }
 
+function deconnexion(req, res){
+    req.session.destroy();
+    res.redirect('/connexion');
+}
+
+function infoUser(req, res){
+
+    console.log("session: " + req.session.username + " " + req.session.mytoken + " " + req.session.score )
+
+    User.findOne({"_id" : req.user.userId})
+        .then((result) => {
+            res.send(result);
+        }).catch((err) => {
+        res.status(500).send(err);
+    })
+}
+
+
 module.exports = {
-    pageInscription, postUser, pageConnexion, checkConnexion, updateUser, deleteUser, userJoinCommunity, userLeaveCommunity
+    pageInscription, postUser, pageConnexion, checkConnexion, updateUser, deleteUser, userJoinCommunity,
+    userLeaveCommunity, deconnexion, infoUser
 }

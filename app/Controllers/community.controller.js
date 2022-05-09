@@ -151,8 +151,36 @@ function listTagsofCommunity(req, res) {
     });
 }
 
+function listofCommunities(req, res){
+    Communities.find()
+        .then((result) => {
+            const listCommunities = [];
+
+            for(item of result) {
+                console.log(item.title);
+                listCommunities.push({
+                    name:item.name,
+                    slug: item.slug
+                });
+            }
+            res.send(listCommunities);
+        }).catch((err) => {
+        res.status(500).send(err);
+    });
+}
+
+function listofUserinCommunity(req, res){
+    Communities.findOne({"name" : req.params.community })
+        .then((result) => {
+            res.send(result.users);
+        }).catch((err) => {
+        res.status(500).send(err);
+    });
+}
+
 module.exports = {
-    createCommunities, addTagToCommunity, deleteTagToCommunity, deleteCommunity, listCommunitybyCreator, listTagsofCommunity
+    createCommunities, addTagToCommunity, deleteTagToCommunity, deleteCommunity,
+    listCommunitybyCreator, listTagsofCommunity, listofCommunities, listofUserinCommunity
 }
 
 

@@ -2,20 +2,20 @@ const jwt = require("jsonwebtoken");
 const config = process.env;
 
 const verifyToken = (req, res, next) => {
-    console.log(req.session.mytoken + "_______________________________");
-    const token = req.session.mytoken;
-    if (!token) {
-        return res.status(403).send("A token is required for authentication");
-    }
-    try {
+    console.log(req.session);
+    const test = req.session.mytoken + "";
+    const token = test;
+
+    if(token){
         const decoded = jwt.verify(token, config.SECRET_KEY);
         req.user = decoded;
         console.log(decoded);
-        next();
-    } catch (err) {
-        return res.status(401).send("Invalid Token");
+        console.log("req.user.userId:" + req.user.userId);
+    } else {
+        res.send("You can't connect");
     }
 
+    next()
 };
 
 module.exports = verifyToken;

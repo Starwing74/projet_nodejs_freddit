@@ -7,7 +7,7 @@ const  commentSchema = mongoose.Schema({
         default: 0
     },
     content: {
-        type: Text,
+        type: String,
         required: true
     },
     author: {
@@ -20,7 +20,7 @@ const  commentSchema = mongoose.Schema({
     },
     parent: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment"
+        ref: "Comment",
     }
 
 },{timestamps: true});
