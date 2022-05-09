@@ -136,7 +136,13 @@ function listTagsofCommunity(req, res) {
             console.log(result._id);
             Tags.find({"community" : result._id })
                 .then((result) => {
-                    res.send(result);
+                    const test = [];
+
+                    for(item of result) {
+                        console.log(item.title);
+                        test.push(item.title);
+                    }
+                    res.send(test);
                 }).catch((err) => {
                 res.status(500).send(err);
             });
