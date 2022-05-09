@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const getSession = require('../Middleware/session');
 const verifyToken = require('../Middleware/auth');
 const TextPost = require("../Models/textPost.model");
+const path = require("path");
 const app = express();
 
 app.use(cookieParser());
@@ -40,11 +41,10 @@ function postUser(req, res) {
     });
     user.save()
         .then((result) => {
-            res.send(result);
+            res.redirect('connexion');
         }).catch((err) => {
-        res.status(500).send(err);
-    })
-
+            res.status(500).send(err);
+        })
 };
 
 function updateUser(req, res) {
@@ -82,11 +82,11 @@ function deleteUser(req, res) {
 
 function pageInscription(req, res){
     console.log('Welcome to my web server');
-    res.sendFile('C:\\LP_SMIN\\M12_node_js\\Projet_Node_js\\freddit\\app\\Pages\\page1.html');
+    res.sendFile(path.join(__dirname, '..', 'Pages', 'page1.html'));
 }
 
 function pageConnexion(req, res){
-    res.sendFile('C:\\LP_SMIN\\M12_node_js\\Projet_Node_js\\freddit\\app\\Pages\\pageConnexion.html');
+    res.sendFile(path.join(__dirname, '..', 'Pages', 'pageConnexion.html'));
 }
 
 function checkConnexion(req, res){
