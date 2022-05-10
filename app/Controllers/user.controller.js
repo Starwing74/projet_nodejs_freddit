@@ -12,6 +12,16 @@ const app = express();
 function postUser(req, res) {
     console.log("let's post are name!");
 
+    const slugify = str =>
+        str
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+
+
+
     let name = req.param("name");
     console.log(name);
 
@@ -25,54 +35,44 @@ function postUser(req, res) {
     let email = req.param("email");
     console.log(email);
 
-    if (
-        !email
-        && !encryptedPassword
-        && !name
-    ) {
+    if (!email && !encryptedPassword && !name) {
         return res.status(400).send('Parameters missing');
     }
-    const user = new User({
-        slug: "1",
-        name: name,
-        password: encryptedPassword,
-        email: email
-    });
-    user.save()
-        .then((result) => {
-            res.send(result);
-        }).catch((err) => {
-        res.status(500).send(err);
-    })
 
-    User.findOne({"email" : email})
-        .then((result) => {
-            if(result){
-                res.send("this mail already exist");
-            } else {
-                if (
-                    !email
-                    && !password
-                    && !name
-                ) {
-                    return res.status(400).send('Parameters missing');
+    if (!email || !password || !name) {
+        return res.send('Parameters missing');
+    } else {
+        User.findOne({"email" : email})
+            .then((result) => {
+                if(result){
+                    res.send("this mail already exist");
+                } else {
+                    User.findOne({"slug" : slugify(name)})
+                        .then((result) => {
+                            if(result){
+                                res.send("this name is already taken");
+                            } else {
+                                const user = new User({
+                                    slug: slugify(name),
+                                    name: name,
+                                    password: encryptedPassword,
+                                    email: email
+                                });
+                                user.save()
+                                    .then((result) => {
+                                        res.send(result);
+                                    }).catch((err) => {
+                                    res.send("error in post user");
+                                })
+                            }
+                        }).catch((err) => {
+                        res.send("error in slug");
+                    });
                 }
-                const user = new User({
-                    slug: "1",
-                    name: name,
-                    password: encryptedPassword,
-                    email: email
-                });
-                user.save()
-                    .then((result) => {
-                        res.send(result);
-                    }).catch((err) => {
-                    res.status(500).send(err);
-                })
-            }
-        }).catch((err) => {
-        res.send("error");
-    });
+            }).catch((err) => {
+            res.send("error in email");
+        });
+    }
 };
 
 function updateUser(req, res, next) {
