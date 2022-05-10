@@ -57,12 +57,14 @@ function getCommunityPosts(req, res) {
 }
 
 function getOne(req, res) {
-    Post.findOne({"slug": req.params.slug})
+    /*Post.findOne({"_id": req.body.id})
         .then((result) => {
+            console.log('result:' + result);
             res.send(result);
-        }).catch((err) => {
-        res.status(500).send(err);
-    });
+            TextPost.findOne({"_id" : result.textPost})
+                .then((result) => {
+            })
+    })*/
 }
 
 function post(req, res) {
@@ -97,7 +99,6 @@ function post(req, res) {
 
                 multimediaPost.save()
                     .then((result) => {
-                        console.log("post :" + post);
                         post.updateOne({"multimediaPost": multimediaPost})
                             .then((result) => {
                                 res.send(result);
@@ -216,6 +217,19 @@ function show(req, res) {
         });
 }
 
+function getContent(req, res) {
+    console.log('test');
+    res.send('test');
+   /* Post.findOne({"_id": req.body.id})
+        .then((result) => {
+            console.log('result:' + result);
+            res.send(result);
+            TextPost.findOne({"_id" : result.textPost})
+                    .then((result) => {
+                })
+        })*/
+}
+
 module.exports = {
-    post, getUserPosts, getCommunityPosts, getOne, update, show
+    post, getUserPosts, getCommunityPosts, getOne, update, show, getContent
 }

@@ -6,6 +6,8 @@ let bodyParser = require("body-parser");
 let cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const multer = require("multer");
+const cors = require('cors')
+
 const {
     GridFsStorage
 } = require("multer-gridfs-storage");
@@ -52,6 +54,7 @@ app.use(session({
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

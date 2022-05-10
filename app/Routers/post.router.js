@@ -38,10 +38,9 @@ const postRouter = express.Router();
 
 postRouter.post('/create', upload.single('file'), postController.post);
 postRouter.post('/user/:user_slug', postController.getUserPosts);
-postRouter.post('/community/:community_slug', postController.getCommunityPosts); // pourrait être l'index d'une communauté
-postRouter.post('/:slug', postController.getOne);
+postRouter.get('/community/:community_slug', postController.getCommunityPosts); // pourrait être l'index d'une communauté
+postRouter.post('/get', postController.getOne);
 postRouter.post('/update/:slug', postController.update);
-
 postRouter.get('/show/:slug', postController.show);
 
 module.exports = postRouter;

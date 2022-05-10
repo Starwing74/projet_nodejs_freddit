@@ -9,7 +9,7 @@ const userRouter = express.Router();
 
 userRouter.get('/register', userController.pageInscription);
 userRouter.post('/post', userController.postUser);
-userRouter.post('/connexion', userController.pageConnexion);
+userRouter.get('/connexion', userController.pageConnexion);
 userRouter.post('/checkConnexion', userController.checkConnexion);
 userRouter.get('/update', verifyToken,userController.updateUser);
 userRouter.delete('/delete', verifyToken, userController.deleteUser);
