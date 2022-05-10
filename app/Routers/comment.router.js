@@ -11,5 +11,6 @@ commentRouter.post('/newComment/:slug', verifyToken, commentController.postComme
 commentRouter.post('/newComment/:slug/:content', verifyToken, commentController.postCommentinComment);
 commentRouter.get('/listCommentsbyUser', verifyToken, commentController.listCommentsfromUser);
 commentRouter.get('/listCommentsbyPost/:slug', verifyToken, commentController.listCommentsfromPost);
+commentRouter.delete('/delete/:slug/:content', verifyToken, commentController.deletebyUser);
 
 module.exports = commentRouter;

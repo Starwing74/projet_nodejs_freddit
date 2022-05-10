@@ -127,6 +127,19 @@ function listCommentsfromPost(req, res){
     });
 }
 
+function deletebyUser(req, res){
+    Comment.findOneAndDelete({"slug" : req.params.slug, "author" : req.user.userId, "content" : req.params.content})
+        .then((result) => {
+            if(result){
+                res.send("delete complet");
+            } else {
+                res.send("this comment can not be delete");
+            }
+        }).catch((err) => {
+        res.status(500).send(err);
+    });
+}
+
 module.exports = {
-    postComment, postCommentinComment, listCommentsfromPost, listCommentsfromUser
+    postComment, postCommentinComment, listCommentsfromPost, listCommentsfromUser, deletebyUser
 }
